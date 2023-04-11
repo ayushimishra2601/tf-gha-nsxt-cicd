@@ -1,11 +1,6 @@
-variable "password" {
-  type = string
-}
-variable "username" {
-  type = string
-}
-variable "nsxhost" {
-  type = string
+locals {
+  namespace   = "mantra-stockx-blogs"
+  environment = "staging"
 }
 
 terraform {
@@ -13,10 +8,6 @@ terraform {
     random = {
       source = "hashicorp/random"
       version = "3.0.1"
-    }
-    nsxt = {
-      source = "vmware/nsxt"
-      version = ">= 3.1.1"
     }
   }
 
@@ -29,15 +20,15 @@ terraform {
   }
 }
 
-provider "nsxt" {
-  host = var.nsxhost
-  username = var.username 
-  password = var.password
-  allow_unverified_ssl = true
-}
+module "cdn-about" {
+  source  = "cloudposse/cloudfront-s3-cdn/aws"
+  version = "0.86.0"
 
-resource "nsxt_policy_tier1_gateway" "tier1_gw" {
-  description = "Tier-1 provisioned by Terraform"
-  display_name = "T1-TFC"
-  route_advertisement_types = ["TIER1_CONNECTED"]
+  namespace   = local.namespace
+  environment = local.environment
+  name        = "about-uploads"
+  aliases     = []
+
+  cloudfront_access_logging_enabled = false
+  versioning_enabled                = true
 }

@@ -1,6 +1,15 @@
-locals {
-  namespace   = "mantra-stockx-blogs"
-  environment = "staging"
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region = "us-east-1"
 }
 
 terraform {
@@ -20,15 +29,11 @@ terraform {
   }
 }
 
-module "cdn-about" {
-  source  = "cloudposse/cloudfront-s3-cdn/aws"
-  version = "0.86.0"
+resource "aws_s3_bucket" "example" {
+  bucket = "my-tf-test-bucket"
 
-  namespace   = local.namespace
-  environment = local.environment
-  name        = "about-uploads"
-  aliases     = []
-
-  cloudfront_access_logging_enabled = false
-  versioning_enabled                = true
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
 }

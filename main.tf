@@ -21,7 +21,7 @@ terraform {
 }
 
 resource "aws_s3_bucket" "example" {
-  bucket = "ayushi-tf-prod-bucket"
+  bucket = "ayushi-tf-dev-bucket"
 
   tags = {
     Name        = "My bucket"

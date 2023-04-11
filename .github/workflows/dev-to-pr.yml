@@ -25,7 +25,7 @@ jobs:
         env:
           TF_WORKSPACE: "dev"
 
-      - name: Terraform Workspace
+      - name: Terraform Workspacee
         id: workspace
         run: terraform workspace select dev
       

@@ -1,22 +1,13 @@
-variable "password" {
-  type = string
-}
-variable "username" {
-  type = string
-}
-variable "nsxhost" {
-  type = string
+# Configure the AWS Provider
+provider "aws" {
+  region = "us-east-1"
 }
 
 terraform {
   required_providers {
-    random = {
-      source = "hashicorp/random"
-      version = "3.0.1"
-    }
-    nsxt = {
-      source = "vmware/nsxt"
-      version = ">= 3.1.1"
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
     }
   }
 
@@ -29,15 +20,11 @@ terraform {
   }
 }
 
-provider "nsxt" {
-  host = var.nsxhost
-  username = var.username 
-  password = var.password
-  allow_unverified_ssl = true
-}
+resource "aws_s3_bucket" "example" {
+  bucket = "myhbchjxbcjdbch-tf-test-bucket-dev"
 
-resource "nsxt_policy_tier1_gateway" "tier1_gw" {
-  description = "Tier-1 provisioned by Terraform"
-  display_name = "T1-TFC"
-  route_advertisement_types = ["TIER1_CONNECTED"]
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
 }

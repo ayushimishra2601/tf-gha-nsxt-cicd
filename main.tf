@@ -21,10 +21,10 @@ terraform {
 }
 
 resource "aws_s3_bucket" "example" {
-  bucket = "myhbchjxbcjdbch-tf-test-bucket"
+  bucket = "ayushi-tf-prod-bucket"
 
   tags = {
     Name        = "My bucket"
-    Environment = "Dev"
+    Environment = "prod"
   }
 }
